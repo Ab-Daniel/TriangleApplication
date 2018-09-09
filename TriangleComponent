@@ -1,0 +1,116 @@
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+
+public class TriangleComponent 
+{
+	
+	public TriangleComponent()
+	{
+		
+		p1 = null;
+		p2 = null;
+		p3 = null;
+		
+		class MousePressListener extends MouseAdapter
+		{
+			
+			int mouseClickTrack = 1;
+			
+			public void mouseClicked(MouseEvent event)
+			{
+				
+				if(mouseClickTrack%1==0)
+				{
+					mousePressedX1 = event.getX( );
+					mousePressedY1 = event.getY( );
+					p1 = new Point2D.Double(mousePressedX1, mousePressedY1);
+					mouseClickTrack++;
+				}
+				
+				if (mouseClickTrack%2==0)
+				{
+					mousePressedX2 = event.getX( );
+					mousePressedY2 = event.getY( );
+					p2 = new Point2D.Double(mousePressedX2, mousePressedY2);
+				}
+				
+				if (mouseClickTrack%3==0)
+				{
+					mousePressedX3 = event.getX();
+					mousePressedY3 = event.getY();
+					p3 = new Point2D.Double(mousePressedX3, mousePressedY3);
+				}
+				
+				
+				
+			}
+			
+		}
+		
+		MouseListener listener = new MousePressListener();
+		//addMouseListener(listener);
+		
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		
+		//super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D)g; //recovers Graphics2D
+		
+		plotPoints(g2);
+		
+		if(p1!=null && p2!=null)
+		{
+			
+			g2.drawLine(mousePressedX1, mousePressedY1, mousePressedX2, mousePressedY2);
+			
+		}
+		
+		if(p1!=null && p2!=null && p3!=null)
+		{
+			g2.drawLine(mousePressedX1, mousePressedY1, mousePressedX3, mousePressedY3);
+			g2.drawLine(mousePressedX2, mousePressedY2, mousePressedX3, mousePressedY3);
+		}
+		
+	}
+	
+	public void plotPoints(Graphics g2)
+	{
+		
+		double x1 = p1.getX();
+		double y1 = p1.getY();
+		
+		double x2 = p2.getX();
+		double y2 = p2.getY();
+		
+		double x3 = p3.getX();
+		double y3 = p3.getY();
+		
+		Ellipse2D.Double dot1 = new Ellipse2D.Double(x1, y1, 5, 5);
+		//g2.fill(dot1);
+		Ellipse2D.Double dot2 = new Ellipse2D.Double(x2, y2, 5, 5);
+		//g2.fill(dot2);
+		
+	}
+	
+	private int mousePressedX1;
+	private int mousePressedY1;
+	
+	private int mousePressedX2;
+	private int mousePressedY2;
+	
+	private int mousePressedX3;
+	private int mousePressedY3;
+	
+	
+	private Point2D.Double p1;
+	private Point2D.Double p2;
+	private Point2D.Double p3;
+	
+}
